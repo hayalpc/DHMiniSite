@@ -1,0 +1,41 @@
+﻿@model DataList<Post>
+@{
+    ViewData["Title"] = "Home page";
+}
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
+</style>
+
+<div class="">
+    <h1 class="display-4 text-center">Posts</h1>
+    <div class="row text-left">
+        @{
+            foreach (var post in Model.Data)
+            {
+                <div class="col-sm-6">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-body text-left">
+                            <a href="/posts/detail/@post.Id">
+                                <div class="col-sm-12"><b>@post.Title</b> - <i>@post.CreateTime</i></div>
+                                <div class="dot-line"></div>
+                                <div class="col-sm-12">@post.Content</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="col-sm-12">
+                <a class="btn btn-sm @(Model.CurrentPage == 0 ? "btn-primary" : "")" href="/">1</a>
+                @for (int i = 2; i <= @Math.Round((decimal)Model.TotalCount / Model.Count, MidpointRounding.ToPositiveInfinity); i++)
+                {
+                    <a class="btn btn-sm @(i-1 == Model.CurrentPage ? "btn-primary" : "") " href="/?page=@i">@i</a>
+                }
+            </div>
+        }
+    </div>
+</div>
+

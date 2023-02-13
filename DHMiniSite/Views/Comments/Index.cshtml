@@ -1,0 +1,54 @@
+﻿@model List<Comment>
+@{
+    ViewData["Title"] = "Comments";
+}
+
+<div class="text-center">
+    <div class="row">
+        <div class="card-body">
+            <table class="table table-bordered table-hover table-responsive">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Post</th>
+                        <th>UserName</th>
+                        <th>Email</th>
+                        <th>Comment</th>
+                        <th>CreateTime</th>
+                        <th>Approved</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        foreach (var comment in Model)
+                        {
+                            <tr>
+                                <td>@comment.Id</td>
+                                <td><a href="/posts/detail/@comment.PostId">@comment.PostId</a></td>
+                                <td>@comment.UserName</td>
+                                <td>@comment.Email</td>
+                                <td>@comment.Content</td>
+                                <td>@comment.CreateTime</td>
+                                <td>@comment.Approved</td>
+                                <td>
+                                    @{
+                                        if (comment.Approved)
+                                        {
+                                            <a class="btn btn-danger btn-sm rounded-circle" data-toggle="tooltip" data-placement="top" title="Decline" href="/comments/changeApprove/@comment.Id"><i class="fas fa-times"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-success btn-sm rounded-circle" data-toggle="tooltip" data-placement="top" title="Approve" href="/comments/changeApprove/@comment.Id"><i class="fas fa-check"></i></a>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿@model Post
+@{
+    ViewData["Title"] = "Post Detail";
+}
+<div class="row text-left">
+    <div class="col-sm-12">
+        <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12"><b>@Model.Title</b> -  <i>@Model.CreateTime</i> - <small>@Model.FullName</small></div>
+                    <div class="dot-line"></div>
+                    <div class="col-sm-12">@Model.Content</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+
+        <div class="card mb-4 rounded-3 shadow-sm book-block">
+            <div class="card-body row">
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        @Html.TextBox("UserName","", new { @class = "form-control", placeholder ="User Name" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        @Html.TextBox("Email","", new { @class = "form-control", placeholder ="Email" })
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        @Html.TextArea("Comment","", new { @class = "form-control", placeholder ="Comment" })
+                    </div>
+                </div>
+                <div class="col-sm-6 offset-sm-6 text-end">
+
+                    <button class="btn btn-sm btn-primary" type="button" onclick="addComment();">Add Comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="row" id="comments">
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+            loadComments();
+        });
+        function renderCommentBlock(name, date, comment) {
+            return '<div class="card">' +
+                '<div class="card-body">' +
+                '<div class="row">' +
+                '<div class="col-sm-12"><b>' + name + '</b> - <i>' + date + '</i></div>' +
+                '<div class="dot-line"></div>' +
+                '<div class="col-sm-12">' + comment + '</div>' +
+                '</div></div></div>';
+        }
+        function loadComments() {
+            var commentsBlock = $("#comments");
+            commentsBlock.html("");
+
+            $.get("/comments/get/@Model.Id", function (result) {
+                result.data.forEach(item => commentsBlock.append(renderCommentBlock(item.userName, item.createTime, item.content)));
+            })
+        }
+
+        function addComment() {
+            var userName = $("#UserName");
+            var email = $("#Email");
+            var comment = $("#Comment");
+            var data = {
+                "userName": userName.val(),
+                "email": email.val(),
+                "content": comment.val(),
+                "postId": "@Model.Id"
+            };
+            $.post("/comments/add", data, function () {
+                userName.val("");
+                email.val("");
+                comment.val("");
+                alert("Your comment has added!");
+                loadComments();
+            })
+
+        }
+    </script>
+
+}
