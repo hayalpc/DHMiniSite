@@ -5,8 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 #if DEBUG
     builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 #else

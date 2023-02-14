@@ -35,8 +35,13 @@ dotnet run
 ```
 
 # Some Screenshots
+- Home page
 ![This is an image](/screenshots/home.png)
+- Posts
 ![This is an image](/screenshots/posts.png)
+- Post detail with comment
 ![This is an image](/screenshots/post_detail_with_comment.png)
+- Post edit
 ![This is an image](/screenshots/post_edit.png)
+- Comments
 ![This is an image](/screenshots/comments.png)
