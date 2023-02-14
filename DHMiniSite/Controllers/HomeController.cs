@@ -30,19 +30,19 @@ namespace DHMiniSite.Controllers
             return View(list);
         }
 
-        public IActionResult Test()
-        {
-            var messages = new List<MailMessageData>();
-            messages.Add(new MailMessageData()
-            {
-                To = "erdinc.karaman60@gmail.com",
-                Subject = "Test Title",
-                Body = "Test Content"
-            });
+        //public IActionResult Test()
+        //{
+        //    var messages = new List<MailMessageData>();
+        //    messages.Add(new MailMessageData()
+        //    {
+        //        To = "erdinc.karaman60@gmail.com",
+        //        Subject = "Test Title",
+        //        Body = "Test Content"
+        //    });
 
-            publisherService.Enqueue(messages, RabbitMQConsts.RabbitMqConstsList.QueueNameEmail.ToString());
-            return Ok();
-        }
+        //    publisherService.Enqueue(messages, RabbitMQConsts.RabbitMqConstsList.QueueNameEmail.ToString());
+        //    return Ok();
+        //}
 
     }
 }
