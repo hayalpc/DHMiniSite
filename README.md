@@ -33,5 +33,10 @@ dotnet build
 ```
 dotnet run
 ```
+
+# Some Screenshots
 ![This is an image](/screenshots/home.png)
 ![This is an image](/screenshots/posts.png)
+![This is an image](/screenshots/post_detail_with_comment.png)
+![This is an image](/screenshots/post_edit.png)
+![This is an image](/screenshots/comments.png)
