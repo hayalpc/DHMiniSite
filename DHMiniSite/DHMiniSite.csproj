@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DHCore\DHCore.csproj" />
     <ProjectReference Include="..\DHData\DHData.csproj" />
+    <ProjectReference Include="..\DHRabbitMQCore\DHRabbitMQCore.csproj" />
   </ItemGroup>
 
 </Project>

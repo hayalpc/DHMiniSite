@@ -1,6 +1,8 @@
 using DHMiniSite.Models;
 using DHMiniSite.Operations;
 using DHMiniSite.Operations.Interfaces;
+using DHRabbitMQCore.Abstract;
+using DHRabbitMQCore.Concrete;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,9 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<DHMiniSiteDatabaseSettings>(
     builder.Configuration.GetSection("DHMiniSiteDatabase"));
 
-builder.Services.AddSingleton<IPostOperations,PostOperations>();
-builder.Services.AddSingleton<ICommentOperations, CommentOperations>();
+builder.Services.AddScoped<IPostOperations,PostOperations>();
+builder.Services.AddScoped<ICommentOperations, CommentOperations>();
 
+builder.Services.AddScoped<IRabbitMQService, RabbitMQService>();
+builder.Services.AddScoped<IRabbitMQConfiguration, RabbitMQConfiguration>();
+builder.Services.AddScoped<IPublisherService, PublisherManager>();
 
 var app = builder.Build();
 

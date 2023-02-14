@@ -2,6 +2,10 @@
 using DHData.Models;
 using DHMiniSite.Models;
 using DHMiniSite.Operations.Interfaces;
+using DHRabbitMQCore.Abstract;
+using DHRabbitMQCore.Consts;
+using DHRabbitMQCore.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -10,8 +14,9 @@ namespace DHMiniSite.Operations
     public class PostOperations : IPostOperations
     {
         private readonly IMongoCollection<Post> postCollection;
+        private readonly IPublisherService publisherService;
 
-        public PostOperations(IOptions<DHMiniSiteDatabaseSettings> dhMiniSiteDatabaseSettings)
+        public PostOperations(IOptions<DHMiniSiteDatabaseSettings> dhMiniSiteDatabaseSettings, IPublisherService publisherService)
         {
             var mongoClient = new MongoClient(
           dhMiniSiteDatabaseSettings.Value.ConnectionString);
@@ -21,6 +26,8 @@ namespace DHMiniSite.Operations
 
             postCollection = mongoDatabase.GetCollection<Post>(
                 dhMiniSiteDatabaseSettings.Value.PostsCollectionName);
+
+            this.publisherService = publisherService;
         }
 
         public async Task<List<Post>> GetAsync() => 
@@ -46,7 +53,22 @@ namespace DHMiniSite.Operations
             
             await postCollection.InsertOneAsync(newModel);
 
+            MailSend(newModel);
+
             return newModel;
+        }
+
+        private void MailSend(Post newModel)
+        {
+            var messages = new List<MailMessageData>();
+            messages.Add(new MailMessageData()
+            {
+                To = newModel.Email,
+                Subject = newModel.Title,
+                Body = newModel.Content
+            });
+
+            publisherService.Enqueue(messages,RabbitMQConsts.RabbitMqConstsList.QueueNameEmail.ToString());
         }
 
         public async Task UpdateAsync(string id, Post updatedModel) =>
